@@ -4,11 +4,11 @@
 
 Forge exists because the available options are all wrong in different ways.
 
-C is transparent and close to the hardware but it is 50 years old and it shows. Its dangers are not features. They are scars. The undefined behaviour, the implicit conversions, the preprocessor, the missing module system — none of these are fundamental to systems programming. They are accidents of 1972 that became tradition. The kernel developers who write safe C have internalized a second type checker in their heads to compensate for the one the language doesn't provide. That skill is real and admirable. It should not be necessary.
+C is transparent and close to the hardware but it is 50 years old and it shows. Its dangers are not features. They are scars. The undefined behaviour, the implicit conversions, the preprocessor, the missing module system, none of these are fundamental to systems programming. They are accidents of 1972 that became tradition. The kernel developers who write safe C have internalized a second type checker in their heads to compensate for the one the language doesn't provide. That skill is real and admirable. It should not be necessary.
 
 Rust got the safety goals right and then kept going until the language became the product. The borrow checker is brilliant engineering. It is also something you fight constantly when writing OS code where the hardware doesn't follow ownership rules. The unsafe blocks proliferate. The complexity compounds. The abstraction layer between you and the machine grows.
 
-Zig has the right instincts — no hidden control flow, explicit allocators, comptime instead of a preprocessor. But it has been "almost-stable" for years, the syntax has a learning curve that isn't proportional to what you gain, and it gets too many smaller things wrong.
+Zig has the right instincts, no hidden control flow, explicit allocators, comptime instead of a preprocessor. But it has been "almost-stable" for years, the syntax has a learning curve that isn't proportional to what you gain, and it gets too many smaller things wrong.
 
 Forge is not a general-purpose language. It is a language for writing operating systems on x86-64. That constraint is deliberate. It is the source of every good decision in the design. A language that tries to be good at everything is good at nothing. Forge tries to be exactly right for one thing.
 
@@ -22,6 +22,16 @@ Forge is a highly-specialized, minimalist systems programming language designed 
 
 The design philosophy prioritizes absolute predictability of machine code, zero runtime overhead, explicit syntax over implicit behavior, and a strict absence of undefined behavior.
 
+## Hello, world!
+
+``` Forge
+import forge.io.print();
+
+@mut main() {
+    print("Hello, world!");
+}
+```
+For more information, check out the **full spesification** in papers directory or check **examples.**
 ## Key Design Principles
 
 1. **No Undefined Behaviour:** Every operation has a completely defined result. Signed integer overflow wraps by default; division by zero and out-of-bounds accesses trigger an immediate hardware trap. Null pointers do not exist as plain values.
