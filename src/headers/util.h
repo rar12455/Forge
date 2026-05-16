@@ -7,19 +7,9 @@
  * (at your option) any later version.
  */
 
-#include <stdio.h>
-#include "../headers/lexer.h"
+#ifndef UTIL_H
+#define UTIL_H
 
-void
-open_file(char* file)
-{
-        char buffer[256];
-        FILE* fp = fopen(file,"r");
+void print_usage(void);
 
-        while(fgets(buffer,sizeof(buffer),fp))
-        {
-                fputs(buffer,stdout);
-        }
-
-        fclose(fp);
-}
+#endif

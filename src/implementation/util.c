@@ -8,18 +8,16 @@
  */
 
 #include <stdio.h>
-#include "../headers/lexer.h"
+#include "../headers/util.h"
 
 void
-open_file(char* file)
+print_usage()
 {
-        char buffer[256];
-        FILE* fp = fopen(file,"r");
-
-        while(fgets(buffer,sizeof(buffer),fp))
-        {
-                fputs(buffer,stdout);
-        }
-
-        fclose(fp);
+        /*
+         * Print usage of the forgec:
+         * More options and information will
+         * added to this procedure as the
+         * project grows.
+         */
+        printf("usage: forgec <file>");
 }
