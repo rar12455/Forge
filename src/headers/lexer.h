@@ -12,8 +12,6 @@
 
 #include <stddef.h>
 
-void open_file(char* file);
-
 typedef enum {
     // Structural Tokens
     TOKEN_EOF = 0,

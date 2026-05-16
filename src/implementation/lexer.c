@@ -10,16 +10,3 @@
 #include <stdio.h>
 #include "../headers/lexer.h"
 
-void
-open_file(char* file)
-{
-        char buffer[256];
-        FILE* fp = fopen(file,"r");
-
-        while(fgets(buffer,sizeof(buffer),fp))
-        {
-                fputs(buffer,stdout);
-        }
-
-        fclose(fp);
-}

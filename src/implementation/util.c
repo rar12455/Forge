@@ -19,5 +19,5 @@ print_usage()
          * added to this procedure as the
          * project grows.
          */
-        printf("usage: forgec <file>");
+        printf("usage: forgec <file>\n");
 }

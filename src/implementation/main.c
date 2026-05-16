@@ -12,20 +12,27 @@
 #include "../headers/lexer.h"
 #include "../headers/util.h"
 
+void
+open_file(char* file)
+{
+        char buffer[256];
+        FILE* fp = fopen(file,"r");
+
+        while(fgets(buffer,sizeof(buffer),fp))
+        {
+                fputs(buffer,stdout);
+        }
+
+        fclose(fp);
+}
+
 int
 main(int argc, char** argv)
 {
         if (argc != 2) {
-                printf("Error: at least one argument is required.");
+                print_usage();
                 exit(1);
         } 
-        else if (argc == 2) {
-                open_file(argv[1]);
-        }
-        else {
-                // Only one argument is supported for now.
-                printf("Error: only one argument is supported.");
-                exit(1);
-        }
+        open_file(argv[1]);
         return 0;
 }
