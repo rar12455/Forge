@@ -27,7 +27,7 @@ The design philosophy prioritizes absolute predictability of machine code, zero 
 1. **No Undefined Behaviour:** Every operation has a completely defined result. Signed integer overflow wraps by default; division by zero and out-of-bounds accesses trigger an immediate hardware trap. Null pointers do not exist as plain values.
 2. **Explicit Over Implicit:** No type inference on expressions, no implicit integer promotion, no hidden allocations, and no implicit return paths. Discarding error codes triggers a terminal compile-time error.
 3. **Purity by Default:** Functions are mathematically pure by default and checked statically. Side-effectful mutations, port I/O, and global modifications are strictly confined to procedures marked explicitly with `@mut`.
-4. **Register-Bound Multi-Returns:** Multiple return values are used for error handling, restricted strictly to a maximum combined footprint of 16 bytes to guarantee allocation entirely within native CPU registers (`rax:rdx`), eliminating hidden stack-spill pointer complexity.
+4. **Predictable Code Generation:** The programmer should be able to predict the assembly output of any Forge function without running the compiler.
 5. **Freestanding First:** Forge assumes no operating system, no C runtime (`libc`), and no heap allocator. Every language primitive works reliably at an interrupt service level or before virtual memory is initialized.
 
 ## Licensing
