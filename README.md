@@ -1,5 +1,23 @@
 # The Forge Programming Language
 
+## Manifesto
+
+Forge exists because the available options are all wrong in different ways.
+
+C is transparent and close to the hardware but it is 50 years old and it shows. Its dangers are not features. They are scars. The undefined behaviour, the implicit conversions, the preprocessor, the missing module system — none of these are fundamental to systems programming. They are accidents of 1972 that became tradition. The kernel developers who write safe C have internalized a second type checker in their heads to compensate for the one the language doesn't provide. That skill is real and admirable. It should not be necessary.
+
+Rust got the safety goals right and then kept going until the language became the product. The borrow checker is brilliant engineering. It is also something you fight constantly when writing OS code where the hardware doesn't follow ownership rules. The unsafe blocks proliferate. The complexity compounds. The abstraction layer between you and the machine grows.
+
+Zig has the right instincts — no hidden control flow, explicit allocators, comptime instead of a preprocessor. But it has been "almost-stable" for years, the syntax has a learning curve that isn't proportional to what you gain, and it gets too many smaller things wrong.
+
+Forge is not a general-purpose language. It is a language for writing operating systems on x86-64. That constraint is deliberate. It is the source of every good decision in the design. A language that tries to be good at everything is good at nothing. Forge tries to be exactly right for one thing.
+
+The goal is simple: crystal-clear syntax that gives you what you need without polluting the screen. Verbosity is not rigour. Boilerplate is not safety. Complexity is not power. You should be able to read any Forge function and know exactly what the CPU will do. No surprises. No magic. No hidden anything.
+
+This is what systems programming should feel like.
+
+## Description
+
 Forge is a highly-specialized, minimalist systems programming language designed explicitly for low-level bare-metal environments, including **bootloaders, operating system kernels, hypervisors, embedded firmware, and device drivers**. 
 
 The design philosophy prioritizes absolute predictability of machine code, zero runtime overhead, explicit syntax over implicit behavior, and a strict absence of undefined behavior.
@@ -11,15 +29,6 @@ The design philosophy prioritizes absolute predictability of machine code, zero 
 3. **Purity by Default:** Functions are mathematically pure by default and checked statically. Side-effectful mutations, port I/O, and global modifications are strictly confined to procedures marked explicitly with `@mut`.
 4. **Register-Bound Multi-Returns:** Multiple return values are used for error handling, restricted strictly to a maximum combined footprint of 16 bytes to guarantee allocation entirely within native CPU registers (`rax:rdx`), eliminating hidden stack-spill pointer complexity.
 5. **Freestanding First:** Forge assumes no operating system, no C runtime (`libc`), and no heap allocator. Every language primitive works reliably at an interrupt service level or before virtual memory is initialized.
-
-## Repository Layout
-
-* `bin/` - Target directory for compiled binaries.
-* `examples/` - Reference Forge programs and bare-metal stubs.
-* `papers/specs/` - Normative language specification drafts (v1.0 through v1.4).
-* `src/` - The bootstrap compiler implementation (`forgec`), hand-rolled in ISO C99.
-  * `headers/` - Component function and compiler state definitions.
-  * `implementation/` - Lexer, parser, symbol table, and ELF64 code-generation passes.
 
 ## Licensing
 
