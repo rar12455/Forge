@@ -31,7 +31,7 @@ import forge.io.print();
     print("Hello, world!");
 }
 ```
-For more information, check out the **full spesification** in papers directory or check **examples.**
+For more information, check out the **full specification** in papers directory or check **examples.**
 ## Key Design Principles
 
 1. **No Undefined Behaviour:** Every operation has a completely defined result. Signed integer overflow wraps by default; division by zero and out-of-bounds accesses trigger an immediate hardware trap. Null pointers do not exist as plain values.
