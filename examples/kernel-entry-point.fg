@@ -1,0 +1,76 @@
+/*
+ * Copyright (C) 2026 rar
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ */
+
+// A more complex, kernel entry point example.
+// taken from Forge spec version 1.4 (see section 24)
+
+module kernel.boot;
+
+import kernel.memory.paging.{init_paging()};
+import kernel.memory.frame.{init_frame_allocator()};
+import kernel.cpu.gdt.{init_gdt()};
+import kernel.cpu.idt.{init_idt()};
+import kernel.drivers.uart.{init_uart(), uart_write()};
+import forge.panic.{panic()};
+
+extern uint8 __bss_start;
+extern uint8 __bss_end;
+
+/// Kernel entry point — called by the Multiboot2 bootloader.
+/// multiboot_magic must equal 0x36D76289.
+/// multiboot_info is the physical address of the Multiboot2 info structure.
+@pub @section(".boot.text") @export("kernel_main")
+@mut kernel_main(uint32 multiboot_magic, uptr multiboot_info) {
+    // Clear BSS before anything else touches memory
+    clear_bss();
+
+    // Initialize CPU structures before enabling interrupts
+    init_gdt();
+    init_idt();
+
+    // Early serial output
+    init_uart(0x3F8uint16, 115200uint32);
+    uart_write("Forge kernel starting\n");
+
+    // Validate bootloader
+    if multiboot_magic != 0x36D7_6289uint32 {
+        panic("Invalid Multiboot2 magic");
+    }
+
+    // Initialize memory subsystem
+    ErrorCode err = init_frame_allocator(multiboot_info);
+    if err != ErrorCode.Ok {
+        panic("Frame allocator init failed");
+    }
+
+    err = init_paging();
+    if err != ErrorCode.Ok {
+        panic("Paging init failed");
+    }
+
+    uart_write("Memory OK\n");
+
+    idle_loop();
+}
+
+@mut clear_bss() {
+    uptr  start = &__bss_start as uptr;
+    uptr  end   = &__bss_end   as uptr;
+    usize len   = (end - start) as usize;
+    @mut uint8* p = start as @mut uint8*;
+    for i in 0..len { p[i] = 0uint8; }
+}
+
+@noreturn @mut idle_loop() {
+    loop {
+        @cpu.disable_interrupts();
+        asm("hlt");
+        @cpu.enable_interrupts();
+    }
+}
